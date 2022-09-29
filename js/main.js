@@ -1,51 +1,16 @@
-////////////  MODALS ////////////
-let PersonModel = Backbone.Model.extend({
-    defaults : {
-        active: false
-    },
-    validate : function(attrs){
-        if(!attrs.name){
-            return "Name is required";
-        }
-    }
-});
-let MobileNumber = Backbone.Model.extend();
-
-
-let Person1 = new PersonModel();
-Person1.set({
-    name: 'XYZ'
+let Song = Backbone.Model.extend();
+let Songs = Backbone.Collection.extend({
+    model:Song
 });
 
-console.log(Person1.toJSON());
-Person1.set({
-    active : true
-})
-console.log(Person1.toJSON());
 
 
-// check the validation 
-let Person2 = new PersonModel();
-// it will return false as the name is not assigned to the function
-console.log(Person2.isValid());
-console.log(Person2.validationError);
+let songs = new Songs([
+    new Song({title : 'ABC'}),
+    new Song({title :'XYZ'}),
+    new Song({title: 'QWEs'})
+]);
 
+songs.add(new Song({title : 'ABCDE'}))
 
-// inheritance
-
-let Animal = Backbone.Model.extend({
-    walk : function(){
-        console.log(" Animal is walking ....")
-    }
-})
-
-
-let Dog = Animal.extend({
-    walk : function(){
-        Animal.prototype.walk.apply(this);   // Access the method of the base class
-        console.log("Dog is walking ....");
-    }
-});
-
-let dog = new Dog();
-dog.walk();
+console.log(songs)
