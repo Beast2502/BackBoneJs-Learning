@@ -1,16 +1,42 @@
-let Song = Backbone.Model.extend();
-let Songs = Backbone.Collection.extend({
-    model:Song
+
+let Mehul = new Person({
+    'person_id' : 111,
+    'name' : 'Mehul'
+});
+
+let WorkContact = new Contact({
+    contact_id : 555,
+    personId : 111,
+    type: 'Office',
+    phone : 123456789,
+    email : 'mehulsaxena45@gmail.com'
+});
+
+let XYZ = new Person({
+    'person_id' : 123,
+    'name' : 'XYZ'
+});
+
+let WorkContactXYZ= new Contact({
+    contact_id : 555,
+    personId : 111,
+    type: 'Office',
+    phone : 123456789,
+    email : 'mehulsaxena45@gmail.com'
 });
 
 
+console.log(Mehul.toJSON());
+Mehul.set('officeContact' , WorkContact.toJSON());
+Mehul.set('homeContact' , WorkContactXYZ.toJSON())
+console.log(Mehul.toJSON())
 
-let songs = new Songs([
-    new Song({title : 'ABC'}),
-    new Song({title :'XYZ'}),
-    new Song({title: 'QWEs'})
-]);
 
-songs.add(new Song({title : 'ABCDE'}))
+AllPerson.add(XYZ);
+AllPerson.add(Mehul);
+console.log(AllPerson.toJSON());
 
-console.log(songs)
+
+AllContacts.add(WorkContact);
+AllContacts.add(WorkContactXYZ);
+console.log(AllContacts.toJSON())
