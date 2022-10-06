@@ -1,42 +1,86 @@
-
-let Mehul = new Person({
-    'person_id' : 111,
-    'name' : 'Mehul'
+/////////////////////// Models
+let Song = Backbone.Model.extend({
+    defaults:{
+        genre : false
+    },
+    initialize : function(){
+        console.log('A new song has been created');
+    },
+    validate: function(attrs){
+        if(!attrs.title){
+            return "Title is required"
+        }
+    }
 });
 
-let WorkContact = new Contact({
-    contact_id : 555,
-    personId : 111,
-    type: 'Office',
-    phone : 123456789,
-    email : 'mehulsaxena45@gmail.com'
+let song = new Song();
+song.set({
+    artist : 'Miles Davis',
+    publishyear : 1959
+})
+console.log(song.get('artist'));
+console.log(song.validationError);
+
+
+/////////////////////// Collections
+let Songs = Backbone.Collection.extend({
+    model: Song
+})
+let songs = new Songs([
+    new Song({title: "Song 1" ,downloads:99}),
+    new Song({title : "Song 2" ,downloads :100, genre : true}),
+    new Song({title : "Song 3" , downloads:321})
+])
+
+songs.add(new Song({title : 'Song 4' ,downloads:231 , genre : true}));
+songs.push(new Song({title : 'Song 5' , downloads:252}));
+console.log(songs.toJSON());
+let songWithId = songs.get('c2');
+console.log(songWithId,"get the data from the collection");
+
+let JazzSong = songs.where({genre : true});
+console.log(JazzSong,'jazz songs');
+
+let firstJazzSong = songs.findWhere({genre : true});
+console.log(firstJazzSong , 'first jazz songs');
+
+let filteredSongs = songs.where({genre : true , title : 'Song 2'});
+console.log(filteredSongs,'filtered songs');
+
+
+let topDownloads =  songs.filter(function(song){
+    return song.get("downloads") > 100;
 });
-
-let XYZ = new Person({
-    'person_id' : 123,
-    'name' : 'XYZ'
-});
-
-let WorkContactXYZ= new Contact({
-    contact_id : 555,
-    personId : 111,
-    type: 'Office',
-    phone : 123456789,
-    email : 'mehulsaxena45@gmail.com'
-});
+console.log("Top downloads" , topDownloads);
 
 
-console.log(Mehul.toJSON());
-Mehul.set('officeContact' , WorkContact.toJSON());
-Mehul.set('homeContact' , WorkContactXYZ.toJSON())
-console.log(Mehul.toJSON())
 
 
-AllPerson.add(XYZ);
-AllPerson.add(Mehul);
-console.log(AllPerson.toJSON());
 
+////////////////////////////////// Views
+let SongView = Backbone.View.extend({
+    tagName : 'span',
+    className: 'mainView',
+    render: function(){
+        this.$el.html("<h1>Mehul Saxena </h1> <div class='mainView'id='mainView'></div>");
+        return this;
+    }
+})
 
-AllContacts.add(WorkContact);
-AllContacts.add(WorkContactXYZ);
-console.log(AllContacts.toJSON())
+let songView = new SongView();
+songView.render();
+$('#container').html(songView.$el);
+
+let DropBoxView = Backbone.View.extend({
+    tagName : 'select',
+    className: 'dropList',
+    id: 'dropList',
+    render: function(){
+        this.$el.html('<option>Select</option>');
+        return this;
+    }
+})
+
+let dropView = new DropBoxView();
+dropView.render();
+$('#mainView').html(dropView.$el);
